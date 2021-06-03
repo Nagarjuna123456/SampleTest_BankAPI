@@ -19,11 +19,17 @@ namespace SampleTest.Controllers
             customerservice = customer;
         }
 
+        //[HttpGet]
+        //[Route("api/customer/getcustomers")]
+        //public IEnumerable<Customer> GetCustomers()
+        //{
+        //    return customerservice.GetCustomers();
+        //}
         [HttpGet]
         [Route("api/customer/getcustomers")]
-        public IEnumerable<Customer> GetCustomers()
+        public ActionResult<IEnumerable<Customer>> GetCustomers()
         {
-            return customerservice.GetCustomers();
+            return Ok(customerservice.GetCustomers());
         }
 
         [HttpGet]
