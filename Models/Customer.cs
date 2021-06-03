@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SampleTest.Models
 {
+    /// <summary>
+    /// Customer API to see the details
+    /// </summary>
     [Table("tblCustomer")]
     public class Customer
     {
