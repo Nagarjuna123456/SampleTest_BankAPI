@@ -10,7 +10,7 @@ namespace SampleTest.Models
     /// <summary>
     /// Customer API to see the details
     /// </summary>
-    [Table("tblCustomer")]
+    [Table("tblCustomers")]
     public class Customer
     {
         [Key]

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SampleTest.Models;
 using SampleTest.Repository;
@@ -32,22 +33,70 @@ namespace SampleTest.Controllers
             return Ok(customerservice.GetCustomers());
         }
 
-        [HttpGet]
-        [Route("api/customer/login/{id},{password}")]
-        public IActionResult Logintocustomer(string id, string password)
+        [HttpPost]
+        [EnableCors("CorsApi")]
+        [Route("api/customer/login/{email},{password}")]
+        public IActionResult Logintocustomer(string email, string password)
         {
-            var result = customerservice.Logintocustomer(id, password);
+            var result = customerservice.Logintocustomer(email, password);
             if (result != null)
             {
                 return Ok("Login Successfully!!");
             } 
-            return NotFound($"User Not Found: {id} , Please check UserID & Password");
+            return NotFound($"User Not Found: {email} , Please check UserID & Password");
         }
+
         [HttpPost]
+        [EnableCors("CorsApi")]
+        [Route("api/Login")]
+        public Response customerLogin([FromBody]Customer login)
+        {
+            var result = customerservice.Logintocustomer(login.Email, login.Password);
+            if(result == null)
+            {
+                return new Response { Status = "Invalid!", Message = "Please try again!" };
+            }
+            else
+            {
+                return new Response { Status = "Success!", Message = "Login Successfully!" };
+            }
+
+        }
+
+
+        [HttpPost]
+        [EnableCors("CorsApi")]
         [Route("api/customer/add")]
         public Customer AddCustomer(Customer customer)
         {
             return customerservice.AddCustomer(customer);
+
+        }
+
+        [HttpPost]
+        [EnableCors("CorsApi")]
+        [Route("api/customer/register")]
+        public IActionResult Register([FromBody] Customer customer)
+        {
+            //return customerservice.AddCustomer(customer);
+            if(customer == null)
+            {
+                return Ok(new Response { Status = "Invalid!", Message = "Record not inserted!" });
+            }
+            else
+            {
+                var result = customerservice.AddCustomer(customer);
+                if(result != null)
+                {
+                    return Ok(new Response { Status = "Success", Message = "Record inserted!" });
+                }
+                else
+                {
+                    return Ok(new Response { Status = "Invalid!", Message = "Record not inserted!" });
+
+                }
+                
+            }
 
         }
         [HttpDelete]

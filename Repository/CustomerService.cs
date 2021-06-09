@@ -57,9 +57,9 @@ namespace SampleTest.Repository
             return customers;
         }
 
-        public Customer Logintocustomer(string id, string password)
+        public Customer Logintocustomer(string email, string password)
         {
-            var customer = dbcontext.customers.FirstOrDefault(c => c.CustomerID == id && c.Password == password);
+            var customer = dbcontext.customers.FirstOrDefault(c => c.Email == email && c.Password == password);
             //var customer = customerlist.FirstOrDefault(c => c.CustomerID == id && c.Password == password);
             return customer;
         }

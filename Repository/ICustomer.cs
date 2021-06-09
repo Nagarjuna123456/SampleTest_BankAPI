@@ -9,7 +9,7 @@ namespace SampleTest.Repository
     public interface ICustomer
     {
         IEnumerable<Customer> GetCustomers();
-        Customer Logintocustomer(string id, string password);
+        Customer Logintocustomer(string email   , string password);
 
         Customer AddCustomer(Customer add);
         void UpdateCustomer(Customer update);

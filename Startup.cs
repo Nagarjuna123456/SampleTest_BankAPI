@@ -28,12 +28,16 @@ namespace SampleTest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(c =>
+            {
+                c.AddPolicy("CorsApi", options => options.WithOrigins("https://localhost:44398").AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
             services.AddControllers();
             services.AddDbContext<SampleTestContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:ICHDBBankConnection"]));
             services.AddTransient<ICustomer, CustomerService>();
             services.AddTransient<IDeposit, DepositService>();
             services.AddTransient<IWithdraw, WithdrawService>();
-
+                      
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" }); });
 
         }
@@ -50,12 +54,18 @@ namespace SampleTest
 
             app.UseRouting();
 
+            app.UseCors("CorsApi");
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+           
+            //app.UseCors(options => options.WithOrigins("https://localhost:44398").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
